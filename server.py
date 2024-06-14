@@ -1,48 +1,46 @@
 from flask import Flask, request, json
 from PIL import Image
-
-
+import requests
+import io
 import os
 from os.path import splitext
 import secrets
 
 
-storage_folder = 'STORAGE FOLDER'
-secret_key = 'SECRET'
+secret_key = 'secret'
 allowed_extension = ['.png', '.jpeg', '.jpg', '.gif']
-
+zenurl = "https://help.grindr.com/api/v2/uploads.json"
 
 app = Flask(__name__)
-
 
 @app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
         if request.form.to_dict(flat=False)['secret_key'][0] == secret_key:
-            '''Get file object from POST request, extract and define needed variables for future use.'''
             file = request.files['image']
             extension = splitext(file.filename)[1]
             file.flush()
             size = os.fstat(file.fileno()).st_size
-            '''Check for file extension and file size.'''
             if extension not in allowed_extension:
                 return 'File type is not supported', 415
 
-            elif size > 6000000:
+            elif size > 47185920:
                 return 'File size too large', 400
 
             else:
-                '''Remove metadata of the file.'''
                 image = Image.open(file)
                 data = list(image.getdata())
                 file_without_exif = Image.new(image.mode, image.size)
                 file_without_exif.putdata(data)
-
-                '''Save the image with a new randomly generated filename in the desired path, and return URL info.'''
                 filename = secrets.token_urlsafe(5)
-                file_without_exif.save(os.path.join(storage_folder, filename + extension))
-                return json.dumps({"filename": filename, "extension": extension}), 200
+                byte_io = io.BytesIO()
+                file_without_exif.save(byte_io, format=image.format)
+                imgbytes = byte_io.getvalue()
+                byte_io.close()
+                req = requests.post(f"{zenurl}?filename={filename}", headers={"Content-Type": "image/png"}, data=imgbytes)
+                return json.dumps({"url": req.json()['upload']['attachments'][0]['mapped_content_url']}), 200
         else:
+            print(request.form.to_dict(flat=False)['secret_key'][0])
             return 'Unauthorized use', 401
 
 
