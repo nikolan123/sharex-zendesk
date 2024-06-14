@@ -1,10 +1,10 @@
 {
-  "Name": "flask-sharex",
+  "Name": "sharex-zendesk",
   "DestinationType": "ImageUploader",
-  "RequestURL": "DOMAIN.COM/upload",
+  "RequestURL": "localhost/upload",
   "FileFormName": "image",
   "Arguments": {
     "secret_key": "secret"
   },
-  "URL": "DOMAIN.COM/static/storage/$json:filename$$json:extension$"
+  "URL": "$json:url$"
 }
