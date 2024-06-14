@@ -1,7 +1,7 @@
 {
   "Name": "sharex-zendesk",
   "DestinationType": "ImageUploader",
-  "RequestURL": "localhost/upload",
+  "RequestURL": "127.0.0.1:80/upload",
   "FileFormName": "image",
   "Arguments": {
     "secret_key": "secret"
