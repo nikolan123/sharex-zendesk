@@ -9,7 +9,7 @@ import secrets
 
 secret_key = 'secret'
 allowed_extension = ['.png', '.jpeg', '.jpg', '.gif']
-zenurl = "https://help.grindr.com/api/v2/uploads.json"
+zenurl = "https://datasupport.nysed.gov/api/v2/uploads.json"
 
 app = Flask(__name__)
 
