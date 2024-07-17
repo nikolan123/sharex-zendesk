@@ -2,7 +2,7 @@
 ---
 
 `sharex-zendesk` is a flask image destination server to upload screenshots to a ZenDesk site from the ShareX client. The project was made in [Python](https://www.python.org/), with the [Flask](http://flask.pocoo.org/) microframework.
-By default, it is set to upload to `help.grindr.com`
+By default, it is set to upload to `datasupport.nysed.gov`
 
 ## Configuration
 In server.py, configure `zenurl` and `secret_key` variables to your desired vaules.
